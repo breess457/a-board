@@ -1,101 +1,289 @@
-import Image from "next/image";
+"use client";
+import React, { ChangeEvent, FormEvent, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
+import { setAuthCookie } from "@/untils/sessionprovider";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { useAuth } from "@/untils/auth";
+import { redirect } from "next/navigation";
+
+
+
+const Alert = ({...props})=>{
+  return (
+      <div className="flex items-center p-4 mb-4 text-red-800 rounded-lg bg-red-50">
+          <div className="sr-only">Info</div>
+          <div className="ms-3 text-sm font-medium">
+              {props.text}
+          </div>
+          <button 
+              type="button" 
+              className="ms-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex items-center justify-center h-8 w-8"
+              onClick={()=>props.setClose(false)}
+          >
+              <FontAwesomeIcon icon={faXmark} />
+          </button>
+      </div>
+  )
+}
+
+const Login = ({...prop})=>{
+  const [username,setUsername] = useState("")
+  const [password, setPassword] = useState("")
+  const [showPassword,setShowPassword] = useState(false)
+  const [alert,setAlert] = useState(false)
+  const [error, setError] = useState({
+    username:false,
+    password:false
+  })
+
+  const handleFormLogin = async (e:FormEvent)=>{
+      e.preventDefault()
+      try{
+        setError({
+          username:!username,
+          password:!password
+        })
+        const response = await fetch(`http://localhost:3001/user/login`,{
+          method:"POST",
+          credentials: 'include',
+          headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json'        
+          },
+          body:JSON.stringify({
+            username:username,
+            password:password
+          })
+        })
+        if(!response.ok) throw new Error(`Response status: ${response.status}`)
+        const responseJson = await response.json()
+        console.log(responseJson)
+        if(responseJson.statusCode === 201){
+            await setAuthCookie(responseJson)
+            setAlert(false)
+            window.location.href = "/pages"
+        }else{
+          setAlert(true)
+        }
+      }catch(e){
+        console.log(e)
+      }
+  }
+
+    return (
+      <form noValidate onSubmit={handleFormLogin}>
+        {alert ? <Alert text={"email หรือ password ไม่ถูกต้อง"} setClose={setAlert} /> : null}
+        <div className="m-3">
+          <h3 className="text-xl font-bold">Login</h3>
+        </div>
+        <div className="m-3">
+          <input 
+              type="text"
+              placeholder="username" 
+              className={`w-full h-10 px-2 rounded-md border ${error.username ? 'border-red-500' : 'border-gray-300'} hover:border-gray-100`}
+              value={username}
+              name="username"
+              onChange={(e)=>setUsername(e.target.value)}
+              required
+          />
+        </div>
+        <div className="m-3">
+        <div className="relative">
+            <input 
+                type={showPassword ? "text" : "password"}
+                placeholder="password" 
+                className={`w-full h-10 px-2 rounded-md border ${error.password ? 'border-red-500' : 'border-gray-300'} hover:border-gray-100`} 
+                name="password"
+                value={password}
+                onChange={(e)=>setPassword(e.target.value)}
+            />
+            <button 
+                type="button" onClick={()=>setShowPassword(!showPassword)}
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 focus:outline-none"
+            >
+                <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} />
+            </button>
+          </div>
+        </div>
+        <div className="m-3">
+            <button type="submit" className="w-full px-4 py-2 text-md font-bold text-center text-white bg-green-400 rounded-lg hover:bg-green-500 focus:ring-4 focus:outline-none focus:ring-green-300">
+                Login
+            </button>
+        </div>
+      </form>
+    )
+}
+
+const Register = ({...prop})=>{
+  const [showPassword,setShowPassword] = useState(false)
+  const [alert, setAlert] = useState(false)
+    const [formRegister, setFormRegister] = useState({
+        firstname:'',
+        lastname:'',
+        phone:'',
+        username:'',
+        password:''
+    })
+    const [error, setError] = useState({
+        firstName:false,
+        lastName:false,
+        phone:false,
+        username:false,
+        password:false,
+    })
+
+    const handleChange = (e:ChangeEvent<HTMLInputElement>)=>{
+      const {name, value} = e.target
+      setFormRegister({
+          ...formRegister,
+          [name]:value
+      })
+    }
+
+    const handleFormSignup = async (e:FormEvent)=>{
+        e.preventDefault()
+        try{
+          setError({
+            firstName:!formRegister.firstname,
+            lastName:!formRegister.lastname,
+            phone:!formRegister.phone,
+            username:!formRegister.username,
+            password:!formRegister.password
+          })
+          const response = await fetch(`http://localhost:3001/user/register`,{
+            method:"POST",
+            credentials: 'include',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'        
+            },
+            body:JSON.stringify({
+              firstname:formRegister.firstname,
+              lastname:formRegister.lastname,
+              phone:formRegister.phone,
+              username:formRegister.username,
+              password:formRegister.password
+            })
+          })
+          if(!response.ok) throw new Error(`Response status: ${response.status}`)
+          const resultJson = await response.json()
+          if(resultJson.statusCode === 201){
+            await setAuthCookie(resultJson)
+            setAlert(false)
+            window.location.href = "/pages"
+          }else{
+            setAlert(true)
+          }
+        }catch(e){
+          console.log(e)
+        }
+    }
+    return(
+      <form noValidate onSubmit={handleFormSignup}>
+        {alert ? <Alert text={"ไม่สามารถใช้ username นี้โปรดใช้ username อื่น"} setClose={setAlert} /> : null}
+        <div className="m-3">
+          <h3 className="text-xl font-bold">Register</h3>
+        </div>
+        <div className="m-3 flex flex-row gap-2">
+          <input 
+            placeholder="firstname" 
+            className={`w-1/2 h-10 px-2 rounded-md border ${error.firstName ? 'border-red-500' : 'border-gray-300'} hover:border-gray-100`} 
+            type="text"
+            name="firstname"
+            value={formRegister.firstname}
+            onChange={handleChange}
+          />
+          <input 
+              placeholder="lastname" 
+              className={`w-1/2 h-10 px-2 rounded-md border ${error.lastName ? 'border-red-500' : 'border-gray-300'} hover:border-gray-100`} 
+              type="text"
+              value={formRegister.lastname}
+              name="lastname"
+              onChange={handleChange}
+          />
+        </div>
+        <div className="m-3">
+          <input 
+              placeholder="phone" 
+              className={`w-full h-10 px-2 rounded-md border ${error.phone ? 'border-red-500' : 'border-gray-300'} hover:border-gray-100`} 
+              type="text"
+              name="phone"
+              value={formRegister.phone}
+              onChange={(e:ChangeEvent<HTMLInputElement>)=>{
+                  const inputValue = e.target.value;
+                  if(/^\d*$/.test(inputValue)){
+                      setFormRegister({
+                          ...formRegister,
+                          ['phone']:inputValue
+                      })
+                  }
+              }}
+              required 
+          />
+        </div>
+        <div className="m-3">
+          <input 
+              placeholder="username" 
+              className={`w-full h-10 px-2 rounded-md border ${error.username ? 'border-red-500' : 'border-gray-300'} hover:border-gray-100`} 
+              type="text"
+              value={formRegister.username}
+              name="username"
+              onChange={handleChange}
+          />
+        </div>
+        <div className="m-3">
+          <div className="relative">
+            <input 
+                type={showPassword ? "text" : "password"}
+                placeholder="password" 
+                className={`w-full h-10 px-2 rounded-md border ${error.password ? 'border-red-500' : 'border-gray-300'} hover:border-gray-100`} 
+                name="password"
+                value={formRegister.password}
+                onChange={handleChange}
+            />
+            <button 
+                type="button" onClick={()=>setShowPassword(!showPassword)}
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 focus:outline-none"
+            >
+                <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} />
+            </button>
+          </div>
+        </div>
+        <div className="m-3">
+            <button type="submit" className="w-full px-4 py-2 text-md font-bold text-center text-white bg-green-400 rounded-lg hover:bg-green-500 focus:ring-4 focus:outline-none focus:ring-green-300">
+                Register
+            </button>
+        </div>
+      </form>
+    )
+}
 
 export default function Home() {
+  const [isForm, setIsForm] = useState("login")
+  const {getcookie} = useAuth()
+  if(getcookie){
+    redirect('/pages')
+  }
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    
+    <div className="flex flex-col lg:flex-row min-h-screen">
+      <div className="w-full h-full lg:w-2/3 bg-green-600 flex items-center justify-center min-h-screen">
+       
+        <div className="relative w-full md:w-1/2">
+          {isForm === "login" && <Login />}
+          {isForm === "register" && <Register />}
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+          
+      </div>
+      <div className="w-full lg:w-1/3 bg-green-700">
+        <div className="w-full h-full flex items-center justify-center min-h-screen">
+          <div className="relative">
+            <img src="/image/images.jpeg" className="masked-image" style={{background:""}}/>
+            {isForm === "login" ? (<button onClick={()=>setIsForm("register")}>register</button>):(<button onClick={()=>setIsForm("login")}>login</button>)}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

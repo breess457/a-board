@@ -23,7 +23,6 @@ export default function OutBlogPage(){
     }
 
     const handleDeleteBlog = (data:any)=>{
-        console.log({ff:data})
         Swal.fire({
             title: "คุณแน่ใจหรือ?",
             text: "เมื่อคุณลบข้อมูลนี้จะไม่สามารถกู้คืนได้!",
@@ -73,7 +72,6 @@ export default function OutBlogPage(){
         .then((isdata)=>setIsBlogOut(isdata))
         .catch((e)=>console.log(e))
     },[])
-    console.log({isProfile})
     return (
         <div className="w-full min-h-screen">
             <div className="max-w-full md:max-w-4xl bg-white py-6 pl-6">

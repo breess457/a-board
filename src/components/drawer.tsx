@@ -1,7 +1,7 @@
 "use client"
 import React,{useState} from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faArrowRightFromBracket, faHouse, faPenToSquare, faRightLong } from "@fortawesome/free-solid-svg-icons"
+import { faArrowRightFromBracket, faHouse, faPenToSquare, faRightLong, faXmark } from "@fortawesome/free-solid-svg-icons"
 import { deleteCookie } from "@/untils/sessionprovider"
 import Link from "next/link"
 
@@ -32,7 +32,9 @@ export default function SideBarDrawer({...propt}){
                   overflow:"auto",
                 }}>
                     <div className="m-4">
-                        <FontAwesomeIcon icon={faRightLong} style={{fontSize:"22px"}} />
+                        <button type="button" onClick={()=>propt.setIsShow(false)}>
+                            <FontAwesomeIcon icon={faXmark} style={{fontSize:"22px"}}/>
+                        </button>
                     </div>
                     <ul className="space-y-2 font-medium">
                         <li 

@@ -58,7 +58,6 @@ const Login = ({...prop})=>{
         })
         if(!response.ok) throw new Error(`Response status: ${response.status}`)
         const responseJson = await response.json()
-        console.log(responseJson)
         if(responseJson.statusCode === 201){
             await setAuthCookie(responseJson)
             setAlert(false)

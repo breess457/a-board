@@ -44,7 +44,7 @@ export default function Page(){
         window.location.href = `http://localhost:3000/pages?category=${category}`;
       }
     };
-    console.log({pp:path})
+    
     useEffect(()=>{
       setSelectedCategory(path ?? "ทั้งหมด")
       if(path){
@@ -58,7 +58,6 @@ export default function Page(){
         .then((res)=>res.json())
         .then((data)=>{
             setIsBlogData(data)
-            console.log({lk:data})
         })
         .catch((e)=>console.log(e))
       }
@@ -69,7 +68,6 @@ export default function Page(){
         return ()=> window.removeEventListener("resize", handleResize)
 
     },[])
-    console.log({isBlogData})
     return (
         <div className="p-3 w-full">
             <div className="flex flex-row w-full">
@@ -117,7 +115,7 @@ export default function Page(){
                             className="mx-4 text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2 me-2 mb-2"
                             onClick={()=>setIsModelCreate(true)}
                         >
-                            create <FontAwesomeIcon icon={faPlus}/>
+                            สร้างกระทู้ <FontAwesomeIcon icon={faPlus}/>
                         </button>
 
                     </div>

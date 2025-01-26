@@ -32,7 +32,7 @@ export default function NavbarSide({...prop}){
               className="ml-auto text-white font-bold bg-[#00cc66] hover:bg-[#00cc66]/90 focus:ring-4 focus:outline-none focus:ring-[#00cc66]/50 font-medium rounded-lg text-sm px-7 py-2 text-center inline-flex items-center dark:focus:ring-[#00cc66]/55 me-2"
               onClick={deleteCookie}
             >
-              <FontAwesomeIcon icon={faArrowRightFromBracket} className="mr-2"/> Logout
+              <FontAwesomeIcon icon={faArrowRightFromBracket} className="mr-2"/> ออกจากระบบ
           </button>
         </li>
         ):(

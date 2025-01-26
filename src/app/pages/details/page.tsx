@@ -24,15 +24,7 @@ export default function DetailPage(){
   
     return `${day}/${month}/${year}`;
   };
-  console.log({blogid})
 
-    const comments = [
-        { username: 'Wittawat98', time: '12h ago', content: 'Lorem ipsum dolor sit amet consectetur. Purus cursus vel est a.' },
-        { username: 'Hawaii51', time: '1mo. ago', content: 'Lorem ipsum dolor sit amet consectetur. Purus cursus vel est a.' },
-        { username: 'Helo_re', time: '3mo. ago', content: 'Lorem ipsum dolor sit amet consectetur. Purus cursus vel est a.' },
-        { username: 'Azc123', time: '4mo. ago', content: 'Lorem ipsum dolor sit amet consectetur. Purus cursus vel est a.' },
-      ];
-  
       useEffect(()=>{
           fetch(`http://localhost:3001/board/detail/${blogid}`,{
               method:"GET",
@@ -58,7 +50,6 @@ export default function DetailPage(){
           .then((data)=>setDataComment(data))
           .catch((e)=>console.log(e))
       },[])
-      console.log({detailData})
 
       const handleSubmitComment = async (e:FormEvent)=>{
         e.preventDefault()

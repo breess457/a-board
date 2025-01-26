@@ -20,13 +20,12 @@ export const dataCategory:readonly selectOption[] = [
     {value:"Others",label:"Others"},
 ]
 export default function UpdateModelBlog({setIsModel,isModel,isData}:any){
-    const [category, setCategory] = useState<string>("")
+    const [category, setCategory] = useState<string>(isData?.category ?? "")
     const {getcookie} = useAuth()
     const [isForm, setIsForm] = useState({
         titleblog: isData?.title ?? "",
         detailblog: isData?.detail ?? ""
     })
-    console.log({ll:isData})
     
     const [error, setError]=useState({
         category:false,
@@ -37,7 +36,6 @@ export default function UpdateModelBlog({setIsModel,isModel,isData}:any){
     const handleCreateBloger = async (e:any)=>{
         e.preventDefault()
         try{
-            console.log(isForm)
             const response = await fetch('http://localhost:3001/board/updateblog/',{
                 method:"PUT",
                 credentials: 'include',
@@ -55,7 +53,6 @@ export default function UpdateModelBlog({setIsModel,isModel,isData}:any){
             if(!response.ok) throw new Error(`Is Error : ${response.status}`)
             const resultjson = await response.json()
             if(resultjson.statusCode === 201){
-                console.log(resultjson)
                 setIsModel(false)
                 Swal.fire({
                     icon:"success",
@@ -80,7 +77,7 @@ export default function UpdateModelBlog({setIsModel,isModel,isData}:any){
                 <div className="relative bg-gray-100 rounded-lg shadow">
                     <div className="p-4 md:p-5 space-y-4">
                         <div className="w-full flex flex-row">
-                            <span className="">create blog</span>
+                            <span className="">แก้ไขกระทู้ของเรา</span>
                             <button 
                                 type="button" 
                                 className="ml-auto end-2.5 text-dark-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
@@ -134,12 +131,12 @@ export default function UpdateModelBlog({setIsModel,isModel,isData}:any){
                                 ></textarea>
                             </div>
                             <div className="flex items-center p-4 md:p-5 space-x-3 rtl:space-x-reverse border-t border-gray-200 rounded-b dark:border-gray-600">
-                                <button type="submit" className="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">I accept</button>
+                                <button type="submit" className="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">ยืนยันแก้ไขกระทู้</button>
                                 <button 
                                     type="button" 
                                     className="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100"
                                     onClick={()=>setIsModel(false)}
-                                >Decline</button>
+                                >ยกเลิก</button>
                             </div>
                         </form>
                     </div>

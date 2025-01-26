@@ -8,7 +8,6 @@ const getHeaders = () => ({
 });
 
 const setAuthCookie = async (respose:any)=>{
-    console.log(respose)
     const cookieStore = await cookies()
      if(respose.token){
         cookieStore.set({

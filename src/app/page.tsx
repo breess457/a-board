@@ -11,7 +11,7 @@ import { redirect } from "next/navigation";
 
 const Alert = ({...props})=>{
   return (
-      <div className="flex items-center p-4 mb-4 text-red-800 rounded-lg bg-red-50">
+      <div className="flex items-center px-4 py-3 mb-4 text-red-800 rounded-lg bg-red-50">
           <div className="sr-only">Info</div>
           <div className="ms-3 text-sm font-medium">
               {props.text}
@@ -72,10 +72,13 @@ const Login = ({...prop})=>{
   }
 
     return (
-      <form noValidate onSubmit={handleFormLogin}>
-        {alert ? <Alert text={"email หรือ password ไม่ถูกต้อง"} setClose={setAlert} /> : null}
+      <form noValidate onSubmit={handleFormLogin} className="font-medium">
+        {alert ? 
+          <div className="m-3">
+            <Alert text={"email หรือ password ไม่ถูกต้อง"} setClose={setAlert} />
+          </div> : null}
         <div className="m-3">
-          <h3 className="text-xl font-bold">Login</h3>
+          <h3 className="text-xl font-bold text-white">เข้าสู่ระบบ</h3>
         </div>
         <div className="m-3">
           <input 
@@ -92,7 +95,7 @@ const Login = ({...prop})=>{
         <div className="relative">
             <input 
                 type={showPassword ? "text" : "password"}
-                placeholder="password" 
+                placeholder="รหัสผ่าน" 
                 className={`w-full h-10 px-2 rounded-md border ${error.password ? 'border-red-500' : 'border-gray-300'} hover:border-gray-100`} 
                 name="password"
                 value={password}
@@ -183,11 +186,11 @@ const Register = ({...prop})=>{
       <form noValidate onSubmit={handleFormSignup}>
         {alert ? <Alert text={"ไม่สามารถใช้ username นี้โปรดใช้ username อื่น"} setClose={setAlert} /> : null}
         <div className="m-3">
-          <h3 className="text-xl font-bold">Register</h3>
+          <h3 className="text-xl font-bold text-white">สมัครสมาชิก</h3>
         </div>
         <div className="m-3 flex flex-row gap-2">
           <input 
-            placeholder="firstname" 
+            placeholder="ชื่อ" 
             className={`w-1/2 h-10 px-2 rounded-md border ${error.firstName ? 'border-red-500' : 'border-gray-300'} hover:border-gray-100`} 
             type="text"
             name="firstname"
@@ -195,7 +198,7 @@ const Register = ({...prop})=>{
             onChange={handleChange}
           />
           <input 
-              placeholder="lastname" 
+              placeholder="นามสกุล" 
               className={`w-1/2 h-10 px-2 rounded-md border ${error.lastName ? 'border-red-500' : 'border-gray-300'} hover:border-gray-100`} 
               type="text"
               value={formRegister.lastname}
@@ -205,7 +208,7 @@ const Register = ({...prop})=>{
         </div>
         <div className="m-3">
           <input 
-              placeholder="phone" 
+              placeholder="เบอร์โทร" 
               className={`w-full h-10 px-2 rounded-md border ${error.phone ? 'border-red-500' : 'border-gray-300'} hover:border-gray-100`} 
               type="text"
               name="phone"
@@ -236,7 +239,7 @@ const Register = ({...prop})=>{
           <div className="relative">
             <input 
                 type={showPassword ? "text" : "password"}
-                placeholder="password" 
+                placeholder="รหัสผ่าน" 
                 className={`w-full h-10 px-2 rounded-md border ${error.password ? 'border-red-500' : 'border-gray-300'} hover:border-gray-100`} 
                 name="password"
                 value={formRegister.password}
@@ -267,20 +270,34 @@ export default function Home() {
   }
   return (
     
-    <div className="flex flex-col lg:flex-row min-h-screen">
-      <div className="w-full h-full lg:w-2/3 bg-green-600 flex items-center justify-center min-h-screen">
+    <div className="flex flex-col md:flex-row min-h-screen" style={{backgroundColor:"#003300"}}>
+      <div className="w-full md:w-1/2 lg:w-2/4 xl:w-3/5 flex items-center justify-center py-10 my-10">
        
-        <div className="relative w-full md:w-1/2">
+        <div className="relative w-full lg:w-4/5 xl:w-1/2">
           {isForm === "login" && <Login />}
           {isForm === "register" && <Register />}
         </div>
           
       </div>
-      <div className="w-full lg:w-1/3 bg-green-700">
-        <div className="w-full h-full flex items-center justify-center min-h-screen">
+      <div className="rounded-[20px] w-full md:w-1/2 lg:w-2/4 xl:w-2/5" style={{backgroundColor:"#196619"}}>
+        <div className="w-full flex items-center justify-center py-10 my-10">
           <div className="relative">
-            <img src="/image/images.jpeg" className="masked-image" style={{background:""}}/>
-            {isForm === "login" ? (<button onClick={()=>setIsForm("register")}>register</button>):(<button onClick={()=>setIsForm("login")}>login</button>)}
+            <img src="/image/book.png" className="" style={{background:""}}/>
+            <div className="flex flex-col w-full items-center justify-center text-white font-bold">a board</div>
+            <div className="flex flex-col w-full items-center justify-center text-white">
+              {isForm === "login" 
+                ? (
+                    <div className="flex flex-row">
+                      <p className="text-gray-300">หากยังไม่มีสมาชิกสามารถ</p>
+                      <button className="mx-3 font-bold underline font-semibold hover:text-blue-500" onClick={()=>setIsForm("register")}>สมัครสมาชิก</button>
+                    </div>)
+                :(<div className="flex flex-row">
+                    <p className="text-gray-300">หากมีสมาชิกสามารถ</p>
+                    <button className="mx-3 font-bold underline font-semibold hover:text-blue-500" onClick={()=>setIsForm("login")}>เข้าสู่ระบบ</button>
+                  </div>
+                )
+              }
+            </div>
           </div>
         </div>
       </div>

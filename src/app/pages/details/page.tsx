@@ -111,9 +111,9 @@ export default function DetailPage(){
                     <div className="text-sm text-gray-500 mb-2 flex">
                       <p className='w-auto bg-gray-100 px-6 py-2 rounded-full'>{detailData?.category}</p>
                     </div>
-                    <h2 className="text-2xl font-bold mb-2">The Big Short War</h2>
-                    <p className="text-gray-700 mb-4">
-                      Tall, athletic, handsome with cerulean eyes, he was the kind of hyper-ambitious kid other kids loved to hate and just the type to make a big wager with no margin for error. But on the night before the S.A.T., his father took pity on him and canceled the bet. "I would've lost it," Ackman concedes...
+                    <h2 className="text-2xl font-bold mb-2">{detailData?.title}</h2>
+                    <p className="text-gray-700 mb-4 mx-4 indent-4">
+                      {detailData?.detail}
                     </p>
                     <p className="text-sm text-gray-500 mb-6">{detailData?.countComment} Comments</p>
                     {showInputComment ? (

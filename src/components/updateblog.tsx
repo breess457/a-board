@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react"
+import React, { FormEvent, useState } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faXmark } from "@fortawesome/free-solid-svg-icons"
 import Select from "react-select"
@@ -19,7 +19,12 @@ export const dataCategory:readonly selectOption[] = [
     {value:"Exercise",label:"Exercise"},
     {value:"Others",label:"Others"},
 ]
-export default function UpdateModelBlog({setIsModel,isModel,isData}:any){
+
+interface UpdateModelBlogProps {
+    setIsModel: React.Dispatch<React.SetStateAction<boolean>>;
+    isData: { _id: string; category:string; title: string; detail: string; countComment:number; createDate:string; userId:string; _v:number };
+  }
+const UpdateModelBlog:React.FC<UpdateModelBlogProps> = ({setIsModel, isData})=>{
     const [category, setCategory] = useState<string>(isData?.category ?? "")
     const {getcookie} = useAuth()
     const [isForm, setIsForm] = useState({
@@ -28,7 +33,7 @@ export default function UpdateModelBlog({setIsModel,isModel,isData}:any){
     })
 
 
-    const handleCreateBloger = async (e:any)=>{
+    const handleCreateBloger = async (e:FormEvent)=>{
         e.preventDefault()
         try{
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/board/updateblog/`,{
@@ -140,3 +145,5 @@ export default function UpdateModelBlog({setIsModel,isModel,isData}:any){
         </div>
     )
 }
+
+export default UpdateModelBlog;

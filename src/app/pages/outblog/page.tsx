@@ -71,6 +71,7 @@ export default function OutBlogPage(){
         .then((isdata)=>setIsBlogOut(isdata))
         .catch((e)=>console.log(e))
     },[])
+    console.log(isCurrenBlog)
     return (
         <div className="w-full min-h-screen">
             <div className="max-w-full md:max-w-4xl bg-white py-6 pl-6">
@@ -114,7 +115,7 @@ export default function OutBlogPage(){
                     </div>
                 ))}
             </div>
-            {isModel ? <UpdateModelBlog isData={isCurrenBlog} isModel={isModel} setIsModel={setIsModel} /> : null}
+            {isModel ? <UpdateModelBlog isData={isCurrenBlog} setIsModel={setIsModel} /> : null}
         </div>
     )
 }

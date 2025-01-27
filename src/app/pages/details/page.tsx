@@ -6,12 +6,30 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useAuth } from '@/untils/auth';
 import Swal from 'sweetalert2';
 import Link from 'next/link';
+interface DetailData {
+  _id: string;
+  category:string;
+  countComment:number;
+  createDate:string;
+  userId:string
+  title: string;
+  detail: string;
+  users:{
+    firstname:string,
+    lastname:string,
+    phone:string,
+    createDate:string,
+    username:string,
+    _id:string
+  }
+}
 
 export default function DetailPage(){
+  
   const {getcookie} = useAuth()
   const searchParams = useSearchParams()
   const blogid = searchParams.get('blogid')
-  const [detailData, setDetailData] = useState<any>({})
+  const [detailData, setDetailData] = useState<DetailData>()
   const [showInputComment, setShowInputComment] = useState(false)
   const [isComment, setIsComment] = useState("")
   const [dataComment, setDataComment] = useState([])

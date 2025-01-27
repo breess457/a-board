@@ -38,7 +38,6 @@ const Login = ()=>{
     password:false
   })
 
-  console.log("apiuri:",apiUrl)
 
   const handleFormLogin = async (e:FormEvent)=>{
       e.preventDefault()

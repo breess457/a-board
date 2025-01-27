@@ -26,7 +26,7 @@ export default function DetailPage(){
   };
 
       useEffect(()=>{
-          fetch(`http://localhost:3001/board/detail/${blogid}`,{
+          fetch(`${process.env.NEXT_PUBLIC_API_URL}/board/detail/${blogid}`,{
               method:"GET",
               headers:{
                 'Content-Type': 'application/json' 
@@ -39,7 +39,7 @@ export default function DetailPage(){
           })
           .catch((e)=>console.log(e))
 
-          fetch(`http://localhost:3001/board/listcomment/${blogid}`,{
+          fetch(`${process.env.NEXT_PUBLIC_API_URL}/board/listcomment/${blogid}`,{
             method:"GET",
               headers:{
                 'Content-Type': 'application/json' 
@@ -54,7 +54,7 @@ export default function DetailPage(){
       const handleSubmitComment = async (e:FormEvent)=>{
         e.preventDefault()
         try{
-          const response = await fetch('http://localhost:3001/board/createcomment',{
+          const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/board/createcomment`,{
             method:"POST",
             headers:{
               Authorization: `Bearer ${getcookie}`,

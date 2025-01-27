@@ -6,7 +6,7 @@ import { setAuthCookie } from "@/untils/sessionprovider";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "@/untils/auth";
 import { redirect } from "next/navigation";
-
+const apiUrl = process.env.NEXT_PUBLIC_API_URL
 
 
 const Alert = ({...props})=>{
@@ -37,6 +37,8 @@ const Login = ({...prop})=>{
     password:false
   })
 
+  console.log("apiuri:",apiUrl)
+
   const handleFormLogin = async (e:FormEvent)=>{
       e.preventDefault()
       try{
@@ -44,7 +46,7 @@ const Login = ({...prop})=>{
           username:!username,
           password:!password
         })
-        const response = await fetch(`http://localhost:3001/user/login`,{
+        const response = await fetch(`${apiUrl}/user/login`,{
           method:"POST",
           credentials: 'include',
           headers: {
@@ -153,7 +155,7 @@ const Register = ({...prop})=>{
             username:!formRegister.username,
             password:!formRegister.password
           })
-          const response = await fetch(`http://localhost:3001/user/register`,{
+          const response = await fetch(`${apiUrl}/user/register`,{
             method:"POST",
             credentials: 'include',
             headers: {

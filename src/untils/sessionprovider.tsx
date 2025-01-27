@@ -32,7 +32,7 @@ const getProfile = async ()=>{
     const cookieStore = await cookies()
     const getcookie = cookieStore.get('Authentication')
     if(getcookie?.value){
-        const fetchData = await fetch('http://localhost:3001/user/profile/',{
+        const fetchData = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/profile/`,{
             method:"GET",
             headers:{
               Authorization: `Bearer ${getcookie?.value}`
@@ -48,7 +48,7 @@ const getProfile = async ()=>{
 const getBlogerAll = async ()=>{
     
     try{
-        const fetchdata = await fetch('http://localhost:3001/board/boardall',{
+        const fetchdata = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/board/boardall`,{
             method:"GET",
             headers:{
               'Content-Type': 'application/json' 

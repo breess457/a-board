@@ -36,7 +36,7 @@ export default function UpdateModelBlog({setIsModel,isModel,isData}:any){
     const handleCreateBloger = async (e:any)=>{
         e.preventDefault()
         try{
-            const response = await fetch('http://localhost:3001/board/updateblog/',{
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/board/updateblog/`,{
                 method:"PUT",
                 credentials: 'include',
                 headers:{

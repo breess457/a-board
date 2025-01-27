@@ -63,7 +63,7 @@ export default function ModelBlog({...prop}){
             setAlert(true)
         }else{
             try{
-                const response = await fetch('http://localhost:3001/board/create/',{
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/board/create/`,{
                     method:"POST",
                     credentials: 'include',
                     headers:{

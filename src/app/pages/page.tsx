@@ -48,7 +48,7 @@ export default function Page(){
     useEffect(()=>{
       setSelectedCategory(path ?? "ทั้งหมด")
       if(path){
-        fetch(`http://localhost:3001/board/boardall?category=${path}`,{
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/board/boardall?category=${path}`,{
             method:"GET",
             headers:{
               'Content-Type': 'application/json' 

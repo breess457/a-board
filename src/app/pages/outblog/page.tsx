@@ -34,7 +34,7 @@ export default function OutBlogPage(){
         }).then(async (result)=>{
             if(result.isConfirmed){
                 try{
-                    const responsedelete = await fetch(`http://localhost:3001/board/deleteblog?blogid=${data?._id}`,{
+                    const responsedelete = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/board/deleteblog?blogid=${data?._id}`,{
                         method:"DELETE",
                         headers:{
                             Authorization: `Bearer ${getcookie}`
@@ -60,7 +60,7 @@ export default function OutBlogPage(){
     }
     useEffect(()=>{
         setIsProfile(getprofile?.Profile)
-        fetch('http://localhost:3001/board/outblog',{
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/board/outblog`,{
             method:"GET",
               headers:{
                 Authorization: `Bearer ${getcookie}`

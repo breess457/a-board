@@ -1,12 +1,12 @@
 "use client"
-import React,{useState} from "react"
+import React from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faArrowRightFromBracket, faHouse, faPenToSquare, faRightLong, faXmark } from "@fortawesome/free-solid-svg-icons"
+import { faArrowRightFromBracket, faHouse, faPenToSquare, faXmark } from "@fortawesome/free-solid-svg-icons"
 import { deleteCookie } from "@/untils/sessionprovider"
 import Link from "next/link"
 
 export default function SideBarDrawer({...propt}){
-    const [isTab, setIsTab] = useState("home")
+    
     return (
     <main 
         className={
@@ -48,7 +48,7 @@ export default function SideBarDrawer({...propt}){
                             </Link>
                         </li>
                         <li 
-                            className={`${isTab === "outblog" && "bg-green-600"} hover:bg-green-600`}
+                            className={`${propt.path === "outblog" && "bg-green-600"} hover:bg-green-600`}
                             
                         >
                             <Link 

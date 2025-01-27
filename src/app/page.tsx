@@ -6,6 +6,7 @@ import { setAuthCookie } from "@/untils/sessionprovider";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "@/untils/auth";
 import { redirect } from "next/navigation";
+import Image from "next/image";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL
 
 
@@ -27,7 +28,7 @@ const Alert = ({...props})=>{
   )
 }
 
-const Login = ({...prop})=>{
+const Login = ()=>{
   const [username,setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [showPassword,setShowPassword] = useState(false)
@@ -119,7 +120,7 @@ const Login = ({...prop})=>{
     )
 }
 
-const Register = ({...prop})=>{
+const Register = ()=>{
   const [showPassword,setShowPassword] = useState(false)
   const [alert, setAlert] = useState(false)
     const [formRegister, setFormRegister] = useState({
@@ -283,7 +284,7 @@ export default function Home() {
       <div className="rounded-[20px] w-full md:w-1/2 lg:w-2/4 xl:w-2/5" style={{backgroundColor:"#196619"}}>
         <div className="w-full flex items-center justify-center py-10 my-10">
           <div className="relative">
-            <img src="/image/book.png" className="" style={{background:""}}/>
+            <Image width={550} height={550} src="/image/book.png" className="" style={{background:""}} alt="book"/>
             <div className="flex flex-col w-full items-center justify-center text-white font-bold">a board</div>
             <div className="flex flex-col w-full items-center justify-center text-white">
               {isForm === "login" 

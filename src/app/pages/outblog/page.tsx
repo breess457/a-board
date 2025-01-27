@@ -1,10 +1,9 @@
 "use client";
-import CardCompnent from "@/components/card";
 import MyCardCompnent from "@/components/mycard";
 import UpdateModelBlog from "@/components/updateblog";
 import { useAuth } from "@/untils/auth";
 import { faCircleUser } from "@fortawesome/free-regular-svg-icons";
-import { faArrowLeft, faEnvelope, faPhone } from "@fortawesome/free-solid-svg-icons";
+import {  faEnvelope, faPhone } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";

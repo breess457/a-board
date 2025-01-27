@@ -1,7 +1,7 @@
 "use client";
 import { useSearchParams } from 'next/navigation'
 import { FormEvent, useEffect, useState } from 'react';
-import { faArrowLeft, faCheck, faLeftLong, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useAuth } from '@/untils/auth';
 import Swal from 'sweetalert2';
@@ -92,7 +92,7 @@ export default function DetailPage(){
                     </Link>
                 </div>
                 <div className="flex items-center my-4">
-                    <img src="/image/profile.jpg" className="w-12 h-12 rounded-full object-cover" /> 
+                    <img src="/image/profile.jpg" alt='profile' className="w-12 h-12 rounded-full object-cover" /> 
                     <div className="ml-4">
                       <h4 className="text-lg font-medium">{detailData?.users?.firstname}  {detailData?.users?.lastname}</h4>
                       <p className="text-sm text-gray-500">{formatDate(detailData?.createDate)}</p>

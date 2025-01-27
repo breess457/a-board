@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import NavbarSide from "@/components/navbar";
 import { cookies } from "next/headers";
 import { getBlogerAll, getProfile } from "@/untils/sessionprovider";
 import { AuthProvider } from "@/untils/auth";

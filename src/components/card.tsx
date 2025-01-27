@@ -20,7 +20,7 @@ export default function CardCompnent({blogData,index}:any){
         <div className="full p-6 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100" key={index}>
             <Link href={`pages/details?blogid=${blogData?._id}`} className="w-full">
                 <div className="flex items-center my-4">
-                    <img src="/image/profile.jpg" className="w-10 h-10 rounded-full object-cover" /> 
+                    <img src="/image/profile.jpg" className="w-10 h-10 rounded-full object-cover" alt="profile" /> 
                     <div className="flex items-center mb-3 ml-5 font-bold">{blogData?.users?.firstname}  {blogData?.users?.lastname}</div>
                 </div>
                 <div className="text-sm text-gray-500 mb-2 flex">

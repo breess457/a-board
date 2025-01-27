@@ -1,5 +1,5 @@
 "use client";
-import React, { useState,ChangeEvent } from "react"
+import React, { useState } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faXmark } from "@fortawesome/free-solid-svg-icons"
 import Select from "react-select"
@@ -26,12 +26,7 @@ export default function UpdateModelBlog({setIsModel,isModel,isData}:any){
         titleblog: isData?.title ?? "",
         detailblog: isData?.detail ?? ""
     })
-    
-    const [error, setError]=useState({
-        category:false,
-        title:false,
-        detail:false
-    })
+
 
     const handleCreateBloger = async (e:any)=>{
         e.preventDefault()

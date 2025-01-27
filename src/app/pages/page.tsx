@@ -2,7 +2,6 @@
 import React,{useState,useEffect} from "react";
 import { faChevronDown, faPlus, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Select from "react-select";
 import ModelBlog from "@/components/modelblog";
 import CardCompnent from "@/components/card";
 import { useAuth } from "@/untils/auth";
@@ -35,9 +34,8 @@ export default function Page(){
     const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
     const handleCategorySelect = (category: string) => {
       setSelectedCategory(category);
-      setIsDropdownOpen(false); // ปิด dropdown เมื่อเลือก
+      setIsDropdownOpen(false);
 
-      // เปลี่ยน URL หรือ fetch data
       if (category === 'ทั้งหมด') {
         window.location.href = 'http://localhost:3000/pages';
       } else {

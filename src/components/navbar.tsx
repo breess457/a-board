@@ -1,10 +1,9 @@
 "use client";
 import React,{useEffect, useState} from "react";
-import { faArrowRightFromBracket, faBars, faList } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRightFromBracket, faList } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { deleteCookie } from "@/untils/sessionprovider";
 export default function NavbarSide({...prop}){
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [screenWidth, setScreenWidth] = useState<any>(null)
 
     useEffect(()=>{

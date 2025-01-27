@@ -24,7 +24,7 @@ export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>) { 
   const cookieStore = await cookies()
   const getcookie = cookieStore.get('Authentication')
   const getDataProfile = await getProfile()

@@ -1,9 +1,10 @@
 "use client";
 import React, { createContext, useContext } from 'react';
+import { DetailData, GetProfile } from './interfacetype';
 interface AuthContextType {
     getcookie?: string;
-    getprofile:any;
-    getBlogerAll:any
+    getprofile:GetProfile;
+    getBlogerAll:DetailData[]
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)

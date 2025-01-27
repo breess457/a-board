@@ -10,7 +10,7 @@ import { usePathname } from "next/navigation";
 export default function RootPagetLayout({ children }:Readonly<{children:React.ReactNode}>){
         const {getcookie} = useAuth()
         const [isShow, setIsShow] = useState(false)
-        const [screenWidth, setScreenWidth] = useState<any>(null)
+        const [screenWidth, setScreenWidth] = useState<number>()
         const pathname = usePathname()
         const paths = pathname.split('/').pop()
 
@@ -27,7 +27,7 @@ export default function RootPagetLayout({ children }:Readonly<{children:React.Re
         <main className="">
             <NavbarSide isShow={isShow} setIsShow={setIsShow} />
             <div className="flex">
-                {screenWidth > 900 ? (<SideBar path={paths} />):null}
+                {screenWidth && screenWidth > 900 ? (<SideBar path={paths} />):null}
                 {children}
             </div>
             <SideBarDrawer 

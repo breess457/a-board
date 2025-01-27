@@ -2,12 +2,13 @@
 import { cookies } from "next/headers";
 import { jwtDecode } from "jwt-decode";
 import { redirect } from "next/navigation";
+import { TypeAuthCookie } from "./interfacetype";
 
 const getHeaders = () => ({
     Cookie: cookies().toString(),
 });
 
-const setAuthCookie = async (respose:any)=>{
+const setAuthCookie = async (respose:TypeAuthCookie)=>{
     const cookieStore = await cookies()
      if(respose.token){
         cookieStore.set({

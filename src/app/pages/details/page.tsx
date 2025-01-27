@@ -6,23 +6,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useAuth } from '@/untils/auth';
 import Swal from 'sweetalert2';
 import Link from 'next/link';
-interface DetailData {
-  _id: string;
-  category:string;
-  countComment:number;
-  createDate:string;
-  userId:string
-  title: string;
-  detail: string;
-  users:{
-    firstname:string,
-    lastname:string,
-    phone:string,
-    createDate:string,
-    username:string,
-    _id:string
-  }
-}
+import { DetailData,CommentData } from '@/untils/interfacetype';
+
 
 export default function DetailPage(){
   
@@ -30,11 +15,11 @@ export default function DetailPage(){
   const searchParams = useSearchParams()
   const blogid = searchParams.get('blogid')
   const [detailData, setDetailData] = useState<DetailData>()
-  const [showInputComment, setShowInputComment] = useState(false)
-  const [isComment, setIsComment] = useState("")
-  const [dataComment, setDataComment] = useState([])
+  const [showInputComment, setShowInputComment] = useState<boolean>(false)
+  const [isComment, setIsComment] = useState<string>("")
+  const [dataComment, setDataComment] = useState<CommentData[]>([])
 
-  const formatDate = (isoString:any) => {
+  const formatDate = (isoString:string):string => {
     const date = new Date(isoString);
     const day = String(date.getDate()).padStart(2, '0');
     const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -112,8 +97,8 @@ export default function DetailPage(){
                 <div className="flex items-center my-4">
                     <img src="/image/profile.jpg" alt='profile' className="w-12 h-12 rounded-full object-cover" /> 
                     <div className="ml-4">
-                      <h4 className="text-lg font-medium">{detailData?.users?.firstname}  {detailData?.users?.lastname}</h4>
-                      <p className="text-sm text-gray-500">{formatDate(detailData?.createDate)}</p>
+                      <h4 className="text-lg font-bold">{detailData?.users?.firstname}  {detailData?.users?.lastname}</h4>
+                      <p className="text-sm text-gray-500">{formatDate(`${detailData?.createDate}`)}</p>
                     </div>
                 </div>
                 <div className="">
@@ -161,11 +146,11 @@ export default function DetailPage(){
                     )}
                 </div>
                 <div className="mt-8 space-y-4">
-                  {dataComment.map((comment:any, index:number) => (
+                  {dataComment.map((comment:CommentData, index:number) => (
                     <div key={index} className="flex items-start space-x-4">
                       <div className="w-10 h-10 bg-gray-200 rounded-full flex-shrink-0"></div>
                       <div>
-                        <h5 className="font-medium">{comment?.users?.firstname}</h5>
+                        <h5 className="font-bold text-gray-900">{comment?.users?.firstname}</h5>
                         <p className="text-sm text-gray-500">{formatDate(comment?.createDate)}</p>
                         <p className="text-gray-700 mt-2">{comment?.textcomment}</p>
                       </div>

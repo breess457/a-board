@@ -1,22 +1,27 @@
 "use client";
-import React, { useState } from "react"
+import React, { FormEvent, useState } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faXmark } from "@fortawesome/free-solid-svg-icons"
 import Select from "react-select"
 import { useAuth } from "@/untils/auth";
 import Swal from "sweetalert2";
 
-const Alert = ({...props})=>{
+interface TypeAlert {
+    text:string,
+    setClose:React.Dispatch<React.SetStateAction<boolean>>
+}
+
+const Alert:React.FC<TypeAlert> = ({text,setClose})=>{
   return (
       <div className="flex items-center px-4 py-3 mb-4 text-red-800 rounded-lg bg-red-50">
           <div className="sr-only">Info</div>
           <div className="ms-3 text-sm font-medium">
-              {props.text}
+              {text}
           </div>
           <button 
               type="button" 
               className="ms-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex items-center justify-center h-8 w-8"
-              onClick={()=>props.setClose(false)}
+              onClick={()=>setClose(false)}
           >
               <FontAwesomeIcon icon={faXmark} />
           </button>
@@ -37,8 +42,13 @@ export const dataCategory:readonly selectOption[] = [
     {value:"Exercise",label:"Exercise"},
     {value:"Others",label:"Others"},
 ]
-export default function ModelBlog({...prop}){
-    const [alert, setAlert] = useState(false)
+
+interface TypeModelBlog {
+    setIsModelCreate:React.Dispatch<React.SetStateAction<boolean>>,
+}
+
+const ModelBlog:React.FC<TypeModelBlog> = ({setIsModelCreate})=>{
+    const [alert, setAlert] = useState<boolean>(false)
     const [category, setCategory] = useState<string>("")
     const {getcookie} = useAuth()
     const [isForm, setIsForm] = useState({
@@ -52,7 +62,7 @@ export default function ModelBlog({...prop}){
         detail:false
     })
 
-    const handleCreateBloger = async (e:any)=>{
+    const handleCreateBloger = async (e:FormEvent)=>{
         e.preventDefault()
         if(!(isForm.detailblog && isForm.titleblog && category)){
             setError({
@@ -79,7 +89,7 @@ export default function ModelBlog({...prop}){
                 if(!response.ok) throw new Error(`Is Error : ${response.status}`)
                 const resultjson = await response.json()
                 if(resultjson.statusCode === 201){
-                    prop.setIsModelCreate(false)
+                    setIsModelCreate(false)
                     Swal.fire({
                         icon:"success",
                         title:"success",
@@ -108,7 +118,7 @@ export default function ModelBlog({...prop}){
                             <button 
                                 type="button" 
                                 className="ml-auto end-2.5 text-dark-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
-                                onClick={()=>prop.setIsModelCreate(false)}
+                                onClick={()=>setIsModelCreate(false)}
                             >
                                 <FontAwesomeIcon icon={faXmark} className="h-5 w-5 text-dark-500"/>
                             </button>
@@ -121,8 +131,10 @@ export default function ModelBlog({...prop}){
                                     classNamePrefix="select"
                                     options={dataCategory}
                                     defaultValue={{value: "เลือก",label: "เลือก"}}
-                                    onChange={(e:any)=>{
-                                        setCategory(e?.value)
+                                    onChange={(e:selectOption | null ):void=>{
+                                        if(e){
+                                            setCategory(e?.value)
+                                        }
                                     }}
                                     name="category"
                                     id="category"
@@ -163,7 +175,7 @@ export default function ModelBlog({...prop}){
                                 <button 
                                     type="button" 
                                     className="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100"
-                                    onClick={()=>prop.setIsModelCreate(false)}
+                                    onClick={()=>setIsModelCreate(false)}
                                 >ยกเลิก</button>
                             </div>
                         </form>
@@ -173,3 +185,5 @@ export default function ModelBlog({...prop}){
         </div>
     )
 }
+
+export default ModelBlog

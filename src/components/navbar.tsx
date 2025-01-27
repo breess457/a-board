@@ -4,7 +4,7 @@ import { faArrowRightFromBracket, faList } from "@fortawesome/free-solid-svg-ico
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { deleteCookie } from "@/untils/sessionprovider";
 export default function NavbarSide({...prop}){
-    const [screenWidth, setScreenWidth] = useState<any>(null)
+    const [screenWidth, setScreenWidth] = useState<number>()
 
     useEffect(()=>{
         const handleResize = ()=> setScreenWidth(window.innerWidth)
@@ -24,7 +24,7 @@ export default function NavbarSide({...prop}){
     
     <div className="w-full block w-auto ml-auto">
       <ul className="flex flex-col font-medium px-4 rounded-lg bg-none">
-        {screenWidth > 900 ? (
+        {screenWidth && screenWidth > 900 ? (
         <li className="w-full flex items-center my-2">
           
           <button 

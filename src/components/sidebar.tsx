@@ -7,7 +7,7 @@ import Link from "next/link";
 
 
 export default function SideBar({...prop}){
-    const [screenWidth, setScreenWidth] = useState<any>(null)
+    const [screenWidth, setScreenWidth] = useState<number>()
 
     useEffect(()=>{
         const handleResize = ()=> setScreenWidth(window.innerWidth)
@@ -16,7 +16,7 @@ export default function SideBar({...prop}){
         return ()=> window.removeEventListener("resize", handleResize)
     },[])
     return (
-        <aside className="top-0 left-0 min-h-screen block transition-transform " style={{width:screenWidth > 1130 ? "20%" : "40%"}}>
+        <aside className="top-0 left-0 min-h-screen block transition-transform " style={{width:screenWidth && screenWidth > 1130 ? "20%" : "40%"}}>
             <div className="h-full px-1 py-4 overflow-y-auto bg-gray-50">
                 <ul className="space-y-2 font-medium">
                     <li 

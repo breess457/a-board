@@ -6,12 +6,13 @@ import ModelBlog from "@/components/modelblog";
 import CardCompnent from "@/components/card";
 import { useAuth } from "@/untils/auth";
 import { useSearchParams } from "next/navigation";
+import { DetailData } from "@/untils/interfacetype";
 
-export interface selectOption {
+ interface selectOption {
     readonly value:string;
     readonly label:string;
 }
-export const dataCategory:readonly selectOption[] = [
+ const dataCategory:readonly selectOption[] = [
     {value:"ทั้งหมด",label:"ทั้งหมด"},
     {value:"History",label:"History"},
     {value:"Food",label:"Food"},
@@ -26,10 +27,10 @@ export default function Page(){
     const searchParams = useSearchParams()
     const path = searchParams.get('category')
     const {getBlogerAll} = useAuth()
-    const [search, setSearch] = useState<any>("")
-    const [screenWidth, setScreenWidth] = useState<any>(null)
+    const [search, setSearch] = useState<string>("")
+    const [screenWidth, setScreenWidth] = useState<number>()
     const [isModelCreate, setIsModelCreate] = useState(false)
-    const [isBlogData, setIsBlogData] = useState(getBlogerAll)
+    const [isBlogData, setIsBlogData] = useState<DetailData[]>(getBlogerAll)
     const [selectedCategory, setSelectedCategory] = useState<string>('ทั้งหมด')
     const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
     const handleCategorySelect = (category: string) => {
@@ -69,7 +70,7 @@ export default function Page(){
     return (
         <div className="p-3 w-full">
             <div className="flex flex-row w-full">
-                {screenWidth > 600 ? (
+                {screenWidth && screenWidth > 600 ? (
                 <div className="w-2/3 mx-4">
                     <div className="relative">
                         <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -119,19 +120,19 @@ export default function Page(){
                     </div>
             </div>
             <div className="flex flex-col w-full lg:w-2/3 mt-3">
-                {isBlogData && isBlogData.filter((result:any)=>{
+                {isBlogData && isBlogData.filter((result:DetailData)=>{
                     if(search === ""){
                       return result
                     }else if(result.title.toLowerCase().includes(search.toLowerCase())){
                       return result
                     }
-                }).map((blogdata:any, i:number)=>(
+                }).map((blogdata:DetailData, i:number)=>(
                     <div key={i}>
                         <CardCompnent blogData={blogdata} index={i}/>
                     </div>
                 ))}
             </div>
-            {isModelCreate ? <ModelBlog setIsModelCreate={setIsModelCreate} isModelCreate={isModelCreate} /> : null}
+            {isModelCreate ? <ModelBlog setIsModelCreate={setIsModelCreate} /> : null}
         </div>
     )
 }

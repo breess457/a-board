@@ -1,13 +1,22 @@
+import { BlogData } from "@/untils/interfacetype";
 import { faComment } from "@fortawesome/free-regular-svg-icons";
 import { faPenToSquare, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React from "react";
 
-export default function MyCardCompnent({blogData,index,handleClickModel,handleDeleteBlog}:any){
+interface PropMyCard {
+    blogData:BlogData,
+    index:number,
+    handleClickModel:(currendata:BlogData, status:boolean)=>void,
+    handleDeleteBlog:(data:BlogData)=>void
+}
+
+const  MyCardCompnent:React.FC<PropMyCard> = ({blogData,index,handleClickModel,handleDeleteBlog})=>{
 
     return(
         <div className="full p-6 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100" key={index}>
             <a className="w-full">
-                <div className="flex items-center mb-3">{blogData?.users?.firstname}  {blogData?.users?.lastname}</div>
+                <div className="flex items-center mb-3"></div>
                 <h2 className="text-lg font-semibold text-gray-900 mb-2">{blogData?.title}</h2>
                 <p className="text-sm text-gray-700 mb-4">
                     {blogData?.detail}
@@ -32,3 +41,5 @@ export default function MyCardCompnent({blogData,index,handleClickModel,handleDe
         </div>
     )
 }
+
+export default MyCardCompnent;

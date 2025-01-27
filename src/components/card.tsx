@@ -1,9 +1,16 @@
+import { DetailData } from "@/untils/interfacetype";
 import { faComment } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
+import React from "react";
 
-export default function CardCompnent({blogData,index}:any){
-    const truncateTextBySentence = (text:any, maxkength:number)=>{
+interface TypeCardComponent {
+    blogData:DetailData,
+    index:number
+}
+
+const CardCompnent:React.FC<TypeCardComponent>=({blogData,index})=>{
+    const truncateTextBySentence = (text:string, maxkength:number)=>{
         if(text.length <= maxkength) return text
         const truncated = text.slice(0, maxkength)
         const lastSentenceEnd = truncated.lastIndexOf('.');
@@ -38,3 +45,5 @@ export default function CardCompnent({blogData,index}:any){
         </div>
     )
 }
+
+export default CardCompnent

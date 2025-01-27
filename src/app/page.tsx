@@ -9,18 +9,22 @@ import { redirect } from "next/navigation";
 import Image from "next/image";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL
 
+interface TypeAlert{
+  text:string,
+  setClose:React.Dispatch<React.SetStateAction<boolean>>
+}
 
-const Alert = ({...props})=>{
+const Alert:React.FC<TypeAlert> = ({text, setClose})=>{
   return (
       <div className="flex items-center px-4 py-3 mb-4 text-red-800 rounded-lg bg-red-50">
           <div className="sr-only">Info</div>
           <div className="ms-3 text-sm font-medium">
-              {props.text}
+              {text}
           </div>
           <button 
               type="button" 
               className="ms-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex items-center justify-center h-8 w-8"
-              onClick={()=>props.setClose(false)}
+              onClick={()=>setClose(false)}
           >
               <FontAwesomeIcon icon={faXmark} />
           </button>
@@ -37,6 +41,7 @@ const Login = ()=>{
     username:false,
     password:false
   })
+  const [textAlert, setTextAlert] = useState<string>("")
 
 
   const handleFormLogin = async (e:FormEvent)=>{
@@ -46,26 +51,31 @@ const Login = ()=>{
           username:!username,
           password:!password
         })
-        const response = await fetch(`${apiUrl}/user/login`,{
-          method:"POST",
-          credentials: 'include',
-          headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json'        
-          },
-          body:JSON.stringify({
-            username:username,
-            password:password
-          })
-        })
-        if(!response.ok) throw new Error(`Response status: ${response.status}`)
-        const responseJson = await response.json()
-        if(responseJson.statusCode === 201){
-            await setAuthCookie(responseJson)
-            setAlert(false)
-            window.location.href = "/pages"
-        }else{
+        if(!(username && password)){
           setAlert(true)
+          setTextAlert("กรอก username และ password")
+        }else{
+          const response = await fetch(`${apiUrl}/user/login`,{
+            method:"POST",
+            credentials: 'include',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'        
+            },
+            body:JSON.stringify({
+              username:username,
+              password:password
+            })
+          })
+          if(!response.ok) throw new Error(`Response status: ${response.status}`)
+          const responseJson = await response.json()
+          if(responseJson.statusCode === 201){
+              await setAuthCookie(responseJson)
+              setAlert(false)
+          }else{
+            setAlert(true)
+            setTextAlert("email หรือ password ไม่ถูกต้อง")
+          }
         }
       }catch(e){
         console.log(e)
@@ -76,7 +86,7 @@ const Login = ()=>{
       <form noValidate onSubmit={handleFormLogin} className="font-medium">
         {alert ? 
           <div className="m-3">
-            <Alert text={"email หรือ password ไม่ถูกต้อง"} setClose={setAlert} />
+            <Alert text={textAlert} setClose={setAlert} />
           </div> : null}
         <div className="m-3">
           <h3 className="text-xl font-bold text-white">เข้าสู่ระบบ</h3>
@@ -120,8 +130,9 @@ const Login = ()=>{
 }
 
 const Register = ()=>{
-  const [showPassword,setShowPassword] = useState(false)
-  const [alert, setAlert] = useState(false)
+  const [showPassword,setShowPassword] = useState<boolean>(false)
+  const [alert, setAlert] = useState<boolean>(false)
+  const [textAlert, setTextAlert] = useState<string>("")
     const [formRegister, setFormRegister] = useState({
         firstname:'',
         lastname:'',
@@ -155,29 +166,34 @@ const Register = ()=>{
             username:!formRegister.username,
             password:!formRegister.password
           })
-          const response = await fetch(`${apiUrl}/user/register`,{
-            method:"POST",
-            credentials: 'include',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json'        
-            },
-            body:JSON.stringify({
-              firstname:formRegister.firstname,
-              lastname:formRegister.lastname,
-              phone:formRegister.phone,
-              username:formRegister.username,
-              password:formRegister.password
-            })
-          })
-          if(!response.ok) throw new Error(`Response status: ${response.status}`)
-          const resultJson = await response.json()
-          if(resultJson.statusCode === 201){
-            await setAuthCookie(resultJson)
-            setAlert(false)
-            window.location.href = "/pages"
-          }else{
+          if(!(formRegister.firstname && formRegister.lastname && formRegister.phone && formRegister.username && formRegister.password)){
             setAlert(true)
+            setTextAlert("กรุณากรอกข้อมูลให้ครบ")
+          }else{
+            const response = await fetch(`${apiUrl}/user/register`,{
+              method:"POST",
+              credentials: 'include',
+              headers: {
+                  Accept: 'application/json',
+                  'Content-Type': 'application/json'        
+              },
+              body:JSON.stringify({
+                firstname:formRegister.firstname,
+                lastname:formRegister.lastname,
+                phone:formRegister.phone,
+                username:formRegister.username,
+                password:formRegister.password
+              })
+            })
+            if(!response.ok) throw new Error(`Response status: ${response.status}`)
+            const resultJson = await response.json()
+            if(resultJson.statusCode === 201){
+              await setAuthCookie(resultJson)
+              setAlert(false)
+            }else{
+              setAlert(true)
+              setTextAlert("ไม่สามารถใช้ username นี้โปรดใช้ username อื่น")
+            }
           }
         }catch(e){
           console.log(e)
@@ -185,7 +201,7 @@ const Register = ()=>{
     }
     return(
       <form noValidate onSubmit={handleFormSignup}>
-        {alert ? <Alert text={"ไม่สามารถใช้ username นี้โปรดใช้ username อื่น"} setClose={setAlert} /> : null}
+        {alert ? <Alert text={textAlert} setClose={setAlert} /> : null}
         <div className="m-3">
           <h3 className="text-xl font-bold text-white">สมัครสมาชิก</h3>
         </div>

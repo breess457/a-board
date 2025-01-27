@@ -5,6 +5,7 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons"
 import Select from "react-select"
 import { useAuth } from "@/untils/auth";
 import Swal from "sweetalert2";
+import { BlogData } from "@/untils/interfacetype";
 
 export interface selectOption {
     readonly value:string;
@@ -22,7 +23,7 @@ export const dataCategory:readonly selectOption[] = [
 
 interface UpdateModelBlogProps {
     setIsModel: React.Dispatch<React.SetStateAction<boolean>>;
-    isData: { _id: string; category:string; title: string; detail: string; countComment:number; createDate:string; userId:string; _v:number };
+    isData: BlogData;
   }
 const UpdateModelBlog:React.FC<UpdateModelBlogProps> = ({setIsModel, isData})=>{
     const [category, setCategory] = useState<string>(isData?.category ?? "")
@@ -93,8 +94,10 @@ const UpdateModelBlog:React.FC<UpdateModelBlogProps> = ({setIsModel, isData})=>{
                                     classNamePrefix="select"
                                     options={dataCategory}
                                     defaultValue={{value: isData?.category ?? "",label: isData?.category ?? ""}}
-                                    onChange={(e:any)=>{
-                                        setCategory(e?.value)
+                                    onChange={(e:selectOption | null):void=>{
+                                        if(e){
+                                            setCategory(e?.value)
+                                        }
                                     }}
                                     name="category"
                                     id="category"

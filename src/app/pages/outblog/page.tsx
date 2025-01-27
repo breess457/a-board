@@ -7,21 +7,31 @@ import {  faEnvelope, faPhone } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import { BlogData,ProfileData } from "@/untils/interfacetype";
+
 
 export default function OutBlogPage(){
     const {getcookie,getprofile} = useAuth()
-    const [isProfile, setIsProfile] = useState<any>()
-    const [isBlogOut, setIsBlogOut] = useState([])
-
+    const [isProfile, setIsProfile] = useState<ProfileData>()
+    const [isBlogOut, setIsBlogOut] = useState<BlogData[]>([])
+    
     const [isModel, setIsModel] = useState(false)
-    const [isCurrenBlog ,setIsCurrentBlog] = useState({})
+    const [isCurrenBlog ,setIsCurrentBlog] = useState<BlogData>({
+        _id: "",
+        category:"",
+        countComment:0,
+        createDate:"",
+        userId:"",
+        title: "",
+        detail: "",
+    })
 
-    const handleClickModel = (currendata:any, status:boolean)=>{
+    const handleClickModel = (currendata:BlogData, status:boolean)=>{
         setIsModel(status)
         setIsCurrentBlog(currendata)
     }
 
-    const handleDeleteBlog = (data:any)=>{
+    const handleDeleteBlog = (data:BlogData)=>{
         Swal.fire({
             title: "คุณแน่ใจหรือ?",
             text: "เมื่อคุณลบข้อมูลนี้จะไม่สามารถกู้คืนได้!",
@@ -37,7 +47,6 @@ export default function OutBlogPage(){
                         method:"DELETE",
                         headers:{
                             Authorization: `Bearer ${getcookie}`
-                            //'Content-Type': 'application/json' 
                           },
                           credentials: 'include'
                     })
@@ -57,21 +66,22 @@ export default function OutBlogPage(){
             }
         })
     }
+    
     useEffect(()=>{
         setIsProfile(getprofile?.Profile)
         fetch(`${process.env.NEXT_PUBLIC_API_URL}/board/outblog`,{
             method:"GET",
               headers:{
                 Authorization: `Bearer ${getcookie}`
-                //'Content-Type': 'application/json' 
               },
               credentials: 'include'
         })
         .then((res)=>res.json())
-        .then((isdata)=>setIsBlogOut(isdata))
+        .then((isdata)=>{
+            setIsBlogOut(isdata)
+        })
         .catch((e)=>console.log(e))
     },[])
-    console.log(isCurrenBlog)
     return (
         <div className="w-full min-h-screen">
             <div className="max-w-full md:max-w-4xl bg-white py-6 pl-6">
@@ -109,7 +119,7 @@ export default function OutBlogPage(){
             </div>
             <hr className="border-b-4"/>
             <div className="max-w-full md:max-w-4xl bg-white py-6 pl-6">
-                {isBlogOut && isBlogOut.map((isdata:any, i:number)=>(
+                {isBlogOut && isBlogOut.map((isdata:BlogData, i:number)=>(
                     <div key={i} className="mr-4 mb-2">
                         <MyCardCompnent blogData={isdata} index={i} handleClickModel={handleClickModel} handleDeleteBlog={handleDeleteBlog}/>
                     </div>
